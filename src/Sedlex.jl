@@ -32,15 +32,16 @@ making it possible for the token to get inlined (no allocation) when not used.
 struct LightToken
     lexeme_source::Vector{int}
     file::String
-    token_id::int
+    idint::int
     line::int
     col::int
     span::int
     offset::int
-    @inline function LightToken(token_id, src::lexbuf, line, col, span, offset, file)
-        new(src.buf, file, token_id, line, col, span, offset)
+    @inline function LightToken(idint, src::lexbuf, line, col, span, offset, file)
+        new(src.buf, file, idint, line, col, span, offset)
     end
 end
+
 
 function empty_lexbuf()
     lexbuf(
