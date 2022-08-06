@@ -42,6 +42,7 @@ struct LightToken
     end
 end
 
+Base.show(io::IO, tk::LightToken) = print(io, "LT($(tk.idint), $(repr(lexeme(tk))), $(tk.offset), $(tk.file):$(tk.line):$(tk.col))")
 
 function empty_lexbuf()
     lexbuf(
