@@ -25,6 +25,23 @@ Base.@kwdef mutable struct lexbuf
     finished::Bool
 end
 
+"""
+This token does not immediately compute lexemes,
+making it possible for the token to get inlined (no allocation) when not used.
+"""
+struct LightToken
+    lexeme_source::Vector{int}
+    file::String
+    token_id::int
+    line::int
+    col::int
+    span::int
+    offset::int
+    @inline function LightToken(token_id, src::lexbuf, line, col, span, offset, file)
+        new(src.buf, file, token_id, line, col, span, offset)
+    end
+end
+
 function empty_lexbuf()
     lexbuf(
         buf = int[],

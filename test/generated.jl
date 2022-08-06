@@ -1,7 +1,6 @@
-
 using Sedlex
 is_eof(x) = x.token_id == 0
-
+    
 const _sedlex_rnd_39 = [ nothing, Int32(1), Int32(2), Int32(3), Int32(4), Int32(4), Int32(0) ]  # token_ids
 function _sedlex_st_15(lexerbuf::lexbuf)
     result = Int32(-1)
@@ -329,6 +328,7 @@ struct Token
     span::Int32
     offset::Int32
     file::String
+    Token(token_id, src, line, col, span, offset, file) = new(token_id, sedlex_lexeme(src), line, col, span, offset, file)
 end
 function lex(construct_token,  lexerbuf::lexbuf)
     sedlex_start(lexerbuf)
@@ -336,10 +336,10 @@ function lex(construct_token,  lexerbuf::lexbuf)
     case_id < 0 && error("my error")
     token_id = _sedlex_rnd_39[case_id + 1]
     token_id == nothing && return nothing
-    return construct_token(token_id, sedlex_lexeme(lexerbuf), lexerbuf.start_line, lexerbuf.pos - lexerbuf.curr_bol, lexerbuf.pos - lexerbuf.start_pos, lexerbuf.start_pos, lexerbuf.filename)
+    return construct_token(token_id, lexerbuf, lexerbuf.start_line, lexerbuf.pos - lexerbuf.curr_bol, lexerbuf.pos - lexerbuf.start_pos, lexerbuf.start_pos, lexerbuf.filename)
 end
 function lexall(construct_token, buf::lexbuf, is_eof #= Token -> Bool =#)
-    (@static VERSION < v"1.3" ? Channel : Channel{Token})() do coro
+    Channel() do coro
         while true
             token = lex(construct_token, buf)
             token === nothing && continue

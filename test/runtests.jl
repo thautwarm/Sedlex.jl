@@ -18,7 +18,7 @@ const ID_plus = 4
 @testset "Sedlex.jl" begin
     # Write your tests here.
     xs = lexall(from_ustring("1213 + 1.2"), is_eof) do x...
-        Token(x...)
+        Sedlex.LightToken(x...)
     end
     println(collect(xs))
     v_buf = from_ustring("1213 + 1.2")
