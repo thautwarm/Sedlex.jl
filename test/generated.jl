@@ -339,7 +339,7 @@ function lex(construct_token,  lexerbuf::lexbuf)
     return construct_token(token_id, sedlex_lexeme(lexerbuf), lexerbuf.start_line, lexerbuf.pos - lexerbuf.curr_bol, lexerbuf.pos - lexerbuf.start_pos, lexerbuf.start_pos, lexerbuf.filename)
 end
 function lexall(construct_token, buf::lexbuf, is_eof #= Token -> Bool =#)
-    Channel{Token}() do coro
+    Channel{Token}(0) do coro
         while true
             token = lex(construct_token, buf)
             token === nothing && continue
