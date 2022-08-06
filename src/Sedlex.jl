@@ -118,6 +118,16 @@ function lexeme(v_lexbuf::lexbuf)
     String(Char[Char(v_lexbuf.buf[i]) for i = 1+v_lexbuf.start_pos:v_lexbuf.pos])
 end
 
+"""
+retrive the text from the token object
+"""
+function lexeme(tk::LightToken)
+    buf = tk.lexeme_source
+    start_pos = tk.offset
+    span = tk.span
+    String(Char[Char(buf[i]) for i = 1+start_pos:start_pos+span])
+end
+
 struct LexerStateNotFound <: Exception
     i :: Integer
 end
@@ -144,36 +154,4 @@ function lexeme_start(v_lexbuf::lexbuf)
     v_lexbuf.start_pos + v_lexbuf.offset
 end
 
-function lexeme_end(v_lexbuf::lexbuf)
-    v_lexbuf.pos + v_lexbuf.offset
-end
-
-function lexeme_char(v_lexbuf::lexbuf, pos::Integer)
-    Char(v_lexbuf.buf[1+v_lexbuf.start_pos+pos])
-end
-
-struct position
-    pos_fname::String
-    pos_lnum::int
-    pos_cnum::int
-    pos_bol::int
-end
-
-function lexing_positions(v_lexbuf::lexbuf)
-    start_p = position(
-        pos_fname = v_lexbuf.filename,
-        pos_lnum = v_lexbuf.start_line,
-        pos_cnum = v_lexbuf.start_pos + v_lexbuf.offset,
-        pos_bol = v_lexbuf.start_bol,
-    )
-
-    curr_p = position(
-        pos_fname = v_lexbuf.filename,
-        pos_lnum = v_lexbuf.curr_line,
-        pos_cnum = v_lexbuf.pos + v_lexbuf.offset,
-        pos_bol = v_lexbuf.curr_bol,
-    )
-    
-    (start_p, curr_p)
-end
 end

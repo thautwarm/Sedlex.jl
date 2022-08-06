@@ -24,9 +24,10 @@ const ID_plus = 4
     v_buf = from_ustring("1213 + 1.2")
     
     x = lex(v_buf) do args...
-        Token(args...)
+        Sedlex.LightToken(args...)
     end
     @test x.token_id == ID_integral
+    @test sedlex_lexeme(x) == "1213"
 
     x = lex(v_buf) do args...
         Token(args...)
@@ -35,10 +36,11 @@ const ID_plus = 4
     @test x === nothing
 
     x = lex(v_buf) do args...
-        Token(args...)
+        Sedlex.LightToken(args...)
     end
 
     @test x.token_id == ID_plus
+    @test sedlex_lexeme(x) == "+"
 
     x = lex(v_buf) do args...
         Token(args...)
