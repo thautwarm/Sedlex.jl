@@ -98,7 +98,7 @@ function backtrack(v_lexbuf::lexbuf)
 end
 
 function lexeme(v_lexbuf::lexbuf)
-    String(Char[Char(v_lexbuf.buf[i]) for i = 1+v_lexbuf.start_pos:v_lexbuf.pos-1])
+    String(Char[Char(v_lexbuf.buf[i]) for i = 1+v_lexbuf.start_pos:v_lexbuf.pos])
 end
 
 struct LexerStateNotFound <: Exception
