@@ -1,7 +1,7 @@
 using Sedlex
-is_eof(x) = x.token_id == 0
+is_eof(x) = x.idint == 0
     
-const _sedlex_rnd_39 = [ nothing, Int32(1), Int32(2), Int32(3), Int32(4), Int32(4), Int32(0) ]  # token_ids
+const _sedlex_rnd_39 = [ nothing, Int32(1), Int32(2), Int32(3), Int32(4), Int32(4), Int32(0) ]  # idints
 function _sedlex_st_15(lexerbuf::lexbuf)
     result = Int32(-1)
     sedlex_mark(lexerbuf, 2)
@@ -321,22 +321,22 @@ function _sedlex_rnd_1(lexerbuf::lexbuf)
     return result
 end
 struct Token
-    token_id::Int32
+    idint::Int32
     lexeme::String
     line::Int32
     col::Int32
     span::Int32
     offset::Int32
     file::String
-    Token(token_id, src, line, col, span, offset, file) = new(token_id, sedlex_lexeme(src), line, col, span, offset, file)
+    Token(idint, src, line, col, span, offset, file) = new(idint, sedlex_lexeme(src), line, col, span, offset, file)
 end
 function lex(construct_token,  lexerbuf::lexbuf)
     sedlex_start(lexerbuf)
     case_id = _sedlex_st_0(lexerbuf)
     case_id < 0 && error("my error")
-    token_id = _sedlex_rnd_39[case_id + 1]
-    token_id == nothing && return nothing
-    return construct_token(token_id, lexerbuf, lexerbuf.start_line, lexerbuf.pos - lexerbuf.curr_bol, lexerbuf.pos - lexerbuf.start_pos, lexerbuf.start_pos, lexerbuf.filename)
+    idint = _sedlex_rnd_39[case_id + 1]
+    idint == nothing && return nothing
+    return construct_token(idint, lexerbuf, lexerbuf.start_line, lexerbuf.pos - lexerbuf.curr_bol, lexerbuf.pos - lexerbuf.start_pos, lexerbuf.start_pos, lexerbuf.filename)
 end
 function lexall(construct_token, buf::lexbuf, is_eof #= Token -> Bool =#)
     Channel() do coro
