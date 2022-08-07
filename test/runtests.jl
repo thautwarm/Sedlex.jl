@@ -26,7 +26,7 @@ const ID_plus = 4
     x = lex(v_buf) do args...
         Sedlex.LightToken(args...)
     end
-    @test x.token_id == ID_integral
+    @test x.idint == ID_integral
     @test sedlex_lexeme(x) == "1213"
 
     x = lex(v_buf) do args...
@@ -39,7 +39,7 @@ const ID_plus = 4
         Sedlex.LightToken(args...)
     end
 
-    @test x.token_id == ID_plus
+    @test x.idint == ID_plus
     @test sedlex_lexeme(x) == "+"
 
     x = lex(v_buf) do args...
@@ -52,5 +52,5 @@ const ID_plus = 4
         Token(args...)
     end
 
-    @test x.token_id == ID_flt
+    @test x.idint == ID_flt
 end
